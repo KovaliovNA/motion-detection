@@ -83,7 +83,7 @@ public class MotionDetectorMain {
 
       Scalar green = new Scalar(0, 255, 0);
       for (MatOfPoint contour : contours) {
-        if (Imgproc.contourArea(contour) < 500) {
+        if (Imgproc.contourArea(contour) < 700) {
           continue;
         }
 
@@ -93,6 +93,7 @@ public class MotionDetectorMain {
         Imgproc.rectangle(frame, xAndY, xPlusWAndYPlusH, green, 1);
       }
 
+      firstFrame = detectedEdgesMat;
       writer.write(frame);
       processBar.step();
     }
