@@ -1,6 +1,7 @@
 package process_bar;
 
 import java.util.Collections;
+import lombok.Getter;
 
 /**
  * Simple process bar that shown progress of execution some operation.
@@ -14,6 +15,7 @@ public class ProcessBar {
   private static final String BORDER_RIGHT = "]";
 
   private int total;
+  @Getter
   private int remain = 0;
   private String processBarMessage;
 

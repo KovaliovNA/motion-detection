@@ -34,14 +34,14 @@ public class CannyEdgeDetector {
     int[][] blurredImage = gaussian.blurImage(source,
         parameters.getGaussianRadius(), parameters.getGaussianIntensity());
 
-    resultsContainer.storeIntermediateResult(blurredImage);
+    resultsContainer.saveIntermediateResult(blurredImage);
 
     Sobel sobel = new Sobel();
     int[][] gX = sobel.process(blurredImage, Sobel.MASK_H);
     int[][] gY = sobel.process(blurredImage, Sobel.MASK_V);
 
-    resultsContainer.storeIntermediateResult(gX);
-    resultsContainer.storeIntermediateResult(gY);
+    resultsContainer.saveIntermediateResult(gX);
+    resultsContainer.saveIntermediateResult(gY);
 
     double[][] magnitude = nonMaximumSuppression(gX, gY);
 
@@ -49,12 +49,12 @@ public class CannyEdgeDetector {
 
     int[][] threshold = threshold(magnitude);
 
-    resultsContainer.storeIntermediateResult(threshold);
+    resultsContainer.saveIntermediateResult(threshold);
 
     int[][] result = hysteresis(threshold);
 
-    resultsContainer.storeIntermediateResult(result);
-    resultsContainer.storeDefaultValue(result);
+    resultsContainer.saveIntermediateResult(result);
+    resultsContainer.saveDefaultValue(result);
 
     return resultsContainer;
   }

@@ -1,14 +1,14 @@
 package canny_filter;
 
 import java.awt.image.BufferedImage;
+import utils.ImageUtils;
 
 public class Gaussian {
 
   private static final double SQRT2PI = Math.sqrt(2 * Math.PI);
-  private static final int CONS_255 = 0xff;
 
   public int[][] blurImage(BufferedImage img, int radius, double intensity) {
-    int[][] gs = rgbImageToGrayscaleArrayOfPixels(img);
+    int[][] gs = ImageUtils.rgbImageToGrayscaleArrayOfPixels(img);
 
     return blur(gs, radius, intensity);
   }
@@ -71,34 +71,5 @@ public class Gaussian {
     }
 
     return outGS;
-  }
-
-  /**
-   * Send this method a BufferedImage to get a grayscale array (int, value 0-255.
-   *
-   * @param img BufferedImage, the input image from which to extract grayscale
-   * @return gs   int[][] array of grayscale pixel values from image.
-   */
-  private int[][] rgbImageToGrayscaleArrayOfPixels(BufferedImage img) {
-    int[][] gs;
-    int height = img.getHeight();
-    int width = img.getWidth();
-
-    gs = new int[height][width];
-
-    for (int i = 0; i < height; i++) {
-      for (int j = 0; j < width; j++) {
-        int pixel = img.getRGB(j, i);
-
-        int r = (pixel >> 16) & CONS_255;
-        int g = (pixel >> 8) & CONS_255;
-        int b = pixel & CONS_255;
-
-        long avg = Math.round((r + g + b) / 3.0);
-        gs[i][j] = (int) avg;
-      }
-    }
-
-    return gs;
   }
 }

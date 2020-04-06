@@ -17,13 +17,13 @@ public class ResultsContainer {
   @Getter
   private BufferedImage defaultResult;
 
-  public void storeIntermediateResult(int[][] img) {
+  public void saveIntermediateResult(int[][] img) {
     if (intermediateResultsEnabled) {
       results.add(grayscaleArrayOfPixelsToImage(img));
     }
   }
 
-  public void storeDefaultValue(int[][] img) {
+  public void saveDefaultValue(int[][] img) {
     BufferedImage bufferedImage = grayscaleArrayOfPixelsToImage(img);
     if (!intermediateResultsEnabled) {
       results.add(bufferedImage);
