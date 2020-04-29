@@ -52,18 +52,23 @@ public class Sobel {
 
     for (int r = 3; r < height - 3; r++) {
       for (int c = 3; c < width - 3; c++) {
-        int sum = 0;
-
-        for (int kr = -1; kr < 4; kr++) {
-          for (int kc = -1; kc < 4; kc++) {
-            sum += (mask[kr + 1][kc + 1] * raw[r + kr][c + kc]);
-          }
-        }
+        int sum = getGradientInPoint(raw, mask, r, c);
 
         out[r - 1][c - 1] = sum;
       }
     }
 
     return out;
+  }
+
+  public int getGradientInPoint(int[][] raw, int[][] mask, int y, int x) {
+    int sum = 0;
+
+    for (int kr = -1; kr < 4; kr++) {
+      for (int kc = -1; kc < 4; kc++) {
+        sum += (mask[kr + 1][kc + 1] * raw[y + kr][x + kc]);
+      }
+    }
+    return sum;
   }
 }

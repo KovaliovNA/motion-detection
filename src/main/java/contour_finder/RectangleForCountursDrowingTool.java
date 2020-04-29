@@ -1,5 +1,6 @@
 package contour_finder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import org.apache.commons.lang3.tuple.Pair;
@@ -12,6 +13,8 @@ public class RectangleForCountursDrowingTool {
 
   public static void drawRectangleForContour(Mat frame, List<Contour> contours) {
     Scalar green = new Scalar(0, 255, 0);
+
+    List<Pair<Point, Point>> rectanglesPoints = new ArrayList<>();
 
     for (Contour contour : contours) {
       List<Pair<Integer, Integer>> detectedObjectEdge = contour.getDetectedObjectEdge();
@@ -38,5 +41,12 @@ public class RectangleForCountursDrowingTool {
           new Point(new double[]{minXCoord.getKey() + (maxXCoord.getKey() - minXCoord.getKey()), minYCoord.getValue() + (maxYCoord.getValue() - minYCoord.getValue())});
       Imgproc.rectangle(frame, rectangleLeftPoint, rectangleRightPoint, green, 1);
     }
+
+//    for (Pair<Point, Point> rectanglesPoint : rectanglesPoints) {
+//      Point left = rectanglesPoint.getLeft();
+//      Point right = rectanglesPoint.getRight();
+//
+//
+//    }
   }
 }

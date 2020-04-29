@@ -6,6 +6,8 @@ import static org.opencv.imgproc.Imgproc.INTER_AREA;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.LinkedList;
+import java.util.List;
 import javax.imageio.ImageIO;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
@@ -18,7 +20,8 @@ import org.opencv.imgproc.Imgproc;
 @UtilityClass
 public class ImageUtils {
 
-  private static final int CONS_255 = 0xff;
+  private final int CONS_255 = 0xff;
+  private final int RGB_WHITE = (CONS_255 << 16) | (CONS_255 << 8) | CONS_255;
 
   /**
    * Send this method a BufferedImage to get a grayscale array (int, value 0-255.
@@ -62,41 +65,24 @@ public class ImageUtils {
     return frame;
   }
 
-  //rewrite for binary image case
-  public BufferedImage getImageAbsDiff(BufferedImage img1, BufferedImage img2) {
-    int width1 = img1.getWidth(); // Change - getWidth() and getHeight() for BufferedImage
-    int width2 = img2.getWidth(); // take no arguments
-    int height1 = img1.getHeight();
-    int height2 = img2.getHeight();
-    if ((width1 != width2) || (height1 != height2)) {
-      System.err.println("Error: Images dimensions mismatch");
-      System.exit(1);
-    }
+  public BufferedImage getImageAbsDiff(LinkedList<BufferedImage> prevFrames) {
+    int width = prevFrames.get(0).getWidth();
+    int height = prevFrames.get(0).getHeight();
+    BufferedImage outImg =
+        new BufferedImage(width, height, BufferedImage.TYPE_BYTE_BINARY);
 
-    // NEW - Create output Buffered image of type RGB
-    BufferedImage outImg = new BufferedImage(width1, height1, BufferedImage.TYPE_INT_RGB);
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
 
-    // Modified - Changed to int as pixels are ints
-    int diff;
-    int result; // Stores output pixel
-    for (int i = 0; i < height1; i++) {
-      for (int j = 0; j < width1; j++) {
-        int rgb1 = img1.getRGB(j, i);
-        int rgb2 = img2.getRGB(j, i);
-        int r1 = (rgb1 >> 16) & 0xff;
-        int g1 = (rgb1 >> 8) & 0xff;
-        int b1 = (rgb1) & 0xff;
-        int r2 = (rgb2 >> 16) & 0xff;
-        int g2 = (rgb2 >> 8) & 0xff;
-        int b2 = (rgb2) & 0xff;
-        diff = Math.abs(r1 - r2); // Change
-        diff += Math.abs(g1 - g2);
-        diff += Math.abs(b1 - b2);
-        diff /= 3; // Change - Ensure result is between 0 - 255
-        // Make the difference image gray scale
-        // The RGB components are all the same
-        result = (diff << 16) | (diff << 8) | diff;
-        outImg.setRGB(j, i, result); // Set result
+        int rgb1 = prevFrames.getFirst().getRGB(j, i);
+        int rgb4 = prevFrames.getLast().getRGB(j, i);
+
+        int v1 = (rgb1) & 0xff;
+        int v2 = (rgb4) & 0xff;
+
+        int diff = v1 == v2 ? 0 : 255;
+
+        outImg.setRGB(j, i, (diff << 16) | (diff << 8) | diff);
       }
     }
 

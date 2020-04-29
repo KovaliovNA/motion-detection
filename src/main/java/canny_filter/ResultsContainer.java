@@ -19,12 +19,12 @@ public class ResultsContainer {
 
   public void saveIntermediateResult(int[][] img) {
     if (intermediateResultsEnabled) {
-      results.add(grayscaleArrayOfPixelsToImage(img));
+      results.add(grayscaleArrayOfPixelsToImage(img, BufferedImage.TYPE_INT_RGB));
     }
   }
 
   public void saveDefaultValue(int[][] img) {
-    BufferedImage bufferedImage = grayscaleArrayOfPixelsToImage(img);
+    BufferedImage bufferedImage = grayscaleArrayOfPixelsToImage(img, BufferedImage.TYPE_BYTE_BINARY);
     if (!intermediateResultsEnabled) {
       results.add(bufferedImage);
     }
@@ -38,12 +38,11 @@ public class ResultsContainer {
     }
   }
 
-  private static BufferedImage grayscaleArrayOfPixelsToImage(int[][] raw) {
-    BufferedImage img = null;
+  private static BufferedImage grayscaleArrayOfPixelsToImage(int[][] raw, int imageType) {
     int height = raw.length;
     int width = raw[0].length;
 
-    img = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_BINARY);
+    BufferedImage img = new BufferedImage(width, height, imageType);
 
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -55,11 +54,10 @@ public class ResultsContainer {
   }
 
   private static BufferedImage grayscaleArrayOfPixelsToImage(double[][] raw) {
-    BufferedImage img = null;
     int height = raw.length;
     int width = raw[0].length;
 
-    img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    BufferedImage img =  new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {

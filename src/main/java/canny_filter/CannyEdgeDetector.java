@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 import javax.imageio.ImageIO;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import utils.ImageUtils;
 
 @Slf4j
 public class CannyEdgeDetector {
@@ -33,6 +34,10 @@ public class CannyEdgeDetector {
     Gaussian gaussian = new Gaussian();
     int[][] blurredImage = gaussian.blurImage(source,
         parameters.getGaussianRadius(), parameters.getGaussianIntensity());
+
+//    Adaptive adaptive = new Adaptive();
+//    int[][] gs = ImageUtils.rgbImageToGrayscaleArrayOfPixels(source);
+//    int[][] blurredImage = adaptive.blurImage(gs);
 
     resultsContainer.saveIntermediateResult(blurredImage);
 
@@ -202,8 +207,6 @@ public class CannyEdgeDetector {
           } else {
             img[i][j] = NON_RELEVANT_PIXEL;
           }
-
-
         }
       }
     }
